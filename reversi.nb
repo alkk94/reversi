@@ -1,0 +1,1039 @@
+(* Content-type: application/vnd.wolfram.mathematica *)
+
+(*** Wolfram Notebook File ***)
+(* http://www.wolfram.com/nb *)
+
+(* CreatedBy='Mathematica 10.0' *)
+
+(*CacheID: 234*)
+(* Internal cache information:
+NotebookFileLineBreakTest
+NotebookFileLineBreakTest
+NotebookDataPosition[       158,          7]
+NotebookDataLength[     44819,       1030]
+NotebookOptionsPosition[     44584,       1017]
+NotebookOutlinePosition[     44918,       1032]
+CellTagsIndexPosition[     44875,       1029]
+WindowFrame->Normal*)
+
+(* Beginning of Notebook Content *)
+Notebook[{
+Cell[BoxData[
+ RowBox[{
+  RowBox[{"(*", 
+   RowBox[{
+    RowBox[{"*", " ", 
+     RowBox[{"Tytu\[LSlash]", ":", " ", 
+      RowBox[{
+      "Reversi", "\[IndentingNewLine]", " ", "Autor", " ", "projektu"}], ":", 
+      " ", 
+      RowBox[{"Adrian", " ", "\[CapitalLSlash]ukasik", " ", 
+       RowBox[{
+        RowBox[{"al359800", "@", "students"}], ".", "mimuw", ".", "edu", ".", 
+        "pl"}], "\[IndentingNewLine]", " ", "Projekt", " ", "zosta\[LSlash]", 
+       " ", "wykonany", " ", "samodzielnie", " ", "przeze", " ", 
+       RowBox[{"mnie", ".", "\[IndentingNewLine]", "Wyra\:017cam"}], " ", 
+       "zgod\:0119"}]}]}], ",", " ", 
+    RowBox[{
+    "\:017ceby", " ", "projekt", " ", "zosta\[LSlash]", " ", "umieszczony", 
+     " ", "na", " ", "stronie", " ", "kursowej", " ", "w", " ", 
+     RowBox[{"moodle", "."}]}]}], " ", "**)"}], "\[IndentingNewLine]", 
+  "\[IndentingNewLine]", 
+  RowBox[{"(*", " ", 
+   RowBox[{
+    RowBox[{
+    "Zwraca", " ", "liczb\:0119", " ", "kamieni", " ", "w", " ", "danym", " ",
+      "kierunku"}], ",", " ", 
+    RowBox[{
+    "kt\[OAcute]re", " ", "s\:0105", " ", "w", " ", "kolorze", " ", 
+     "przeciwnika"}], ",", " ", 
+    RowBox[{
+    "kt\[OAcute]re", " ", "b\:0119dzie", " ", "mo\:017cna", " ", 
+     "odwr\[OAcute]ci\[CAcute]", " ", "po", " ", "wykonaniu", " ", "przez", 
+     " ", "aktualnego", " ", "gracza", " ", "ruchu", " ", "na", " ", "pole", 
+     " ", "o", " ", "wsp\[OAcute]\[LSlash]rz\:0119dnych", " ", 
+     RowBox[{
+      RowBox[{"(", 
+       RowBox[{"i", ",", " ", "j"}], ")"}], "."}]}]}], " ", "*)"}], 
+  "\[IndentingNewLine]", 
+  RowBox[{
+   RowBox[{
+    RowBox[{
+     RowBox[{"countColors", "[", 
+      RowBox[{
+      "board_", ",", " ", "colCurrent_", ",", " ", "colEnemy_", ",", " ", 
+       "i_", ",", " ", "j_", ",", " ", "dx_", ",", " ", "dy_"}], "]"}], " ", ":=",
+      " ", 
+     RowBox[{"(", 
+      RowBox[{
+       RowBox[{"n", " ", "=", " ", "0"}], ";", " ", 
+       RowBox[{"x", " ", "=", " ", 
+        RowBox[{"i", " ", "+", " ", "dx"}]}], ";", " ", 
+       RowBox[{"y", " ", "=", " ", 
+        RowBox[{"j", " ", "+", " ", "dy"}]}], ";", " ", 
+       RowBox[{"While", "[", 
+        RowBox[{
+         RowBox[{
+          RowBox[{
+          "1", " ", "\[LessEqual]", " ", "x", " ", "\[LessEqual]", " ", "8"}],
+           " ", "&&", "  ", 
+          RowBox[{
+          "1", " ", "\[LessEqual]", " ", "y", "\[LessEqual]", " ", "8"}], " ",
+           "&&", " ", 
+          RowBox[{
+           RowBox[{
+            RowBox[{"board", "[", 
+             RowBox[{"[", "x", "]"}], "]"}], "[", 
+            RowBox[{"[", "y", "]"}], "]"}], " ", "\[Equal]", " ", 
+           "colEnemy"}]}], ",", " ", 
+         RowBox[{
+          RowBox[{"n", "++"}], ";", " ", 
+          RowBox[{"x", " ", "=", " ", 
+           RowBox[{"x", " ", "+", " ", "dx"}]}], ";", " ", 
+          RowBox[{"y", " ", "=", " ", 
+           RowBox[{"y", " ", "+", " ", "dy"}]}]}]}], "]"}], ";", " ", 
+       RowBox[{"result", " ", "=", " ", "0"}], ";", 
+       RowBox[{"If", "[", 
+        RowBox[{
+         RowBox[{
+          RowBox[{
+          "1", " ", "\[LessEqual]", " ", "x", " ", "\[LessEqual]", " ", "8"}],
+           " ", "&&", "  ", 
+          RowBox[{
+          "1", " ", "\[LessEqual]", " ", "y", "\[LessEqual]", " ", "8"}], " ",
+           "&&", " ", 
+          RowBox[{
+           RowBox[{
+            RowBox[{"board", "[", 
+             RowBox[{"[", "x", "]"}], "]"}], "[", 
+            RowBox[{"[", "y", "]"}], "]"}], " ", "\[Equal]", " ", 
+           "colCurrent"}]}], ",", " ", 
+         RowBox[{"result", " ", "=", " ", "n"}]}], "]"}], ";", " ", 
+       "result"}], ")"}]}], ";"}], "\[IndentingNewLine]", 
+   "\[IndentingNewLine]", 
+   RowBox[{"(*", " ", 
+    RowBox[{
+     RowBox[{
+     "Zwraca", " ", "liczb\:0119", " ", "kamieni", " ", "w", " ", "kolorze", 
+      " ", "przeciwnika"}], ",", " ", 
+     RowBox[{
+     "kt\[OAcute]re", " ", "b\:0119dzie", " ", "mo\:017cna", " ", 
+      "odwr\[OAcute]ci\[CAcute]", " ", "po", " ", "wykonaniu", " ", "przez", 
+      " ", "aktualnego", " ", "gracza", " ", "ruchu", " ", "na", " ", "pole", 
+      " ", "o", " ", "wsp\[OAcute]\[LSlash]rz\:0119dnych", " ", 
+      RowBox[{
+       RowBox[{"(", 
+        RowBox[{"i", ",", " ", "j"}], ")"}], "."}]}]}], " ", "*)"}], 
+   "\[IndentingNewLine]", 
+   RowBox[{
+    RowBox[{
+     RowBox[{"countNeighbours", "[", 
+      RowBox[{
+      "board_", ",", " ", "colCurrent_", ",", " ", "colEnemy_", ",", " ", 
+       "i_", ",", " ", "j_"}], "]"}], " ", ":=", " ", 
+     RowBox[{"(", 
+      RowBox[{
+       RowBox[{"s", " ", "=", " ", "0"}], ";", " ", 
+       RowBox[{"t", "=", " ", "0"}], ";", " ", 
+       RowBox[{"For", "[", 
+        RowBox[{
+         RowBox[{"dx", " ", "=", " ", 
+          RowBox[{"-", "1"}]}], ",", " ", 
+         RowBox[{"dx", " ", "\[LessEqual]", " ", "1"}], ",", 
+         RowBox[{"dx", "++"}], ",", " ", 
+         RowBox[{"For", "[", 
+          RowBox[{
+           RowBox[{"dy", " ", "=", " ", 
+            RowBox[{"-", "1"}]}], ",", " ", 
+           RowBox[{"dy", " ", "\[LessEqual]", " ", "1"}], ",", " ", 
+           RowBox[{"dy", "++"}], ",", " ", 
+           RowBox[{"If", "[", 
+            RowBox[{
+             RowBox[{
+              RowBox[{"dx", " ", "\[NotEqual]", " ", "0"}], " ", "||", " ", 
+              RowBox[{"dy", " ", "\[NotEqual]", " ", "0"}]}], ",", 
+             RowBox[{
+              RowBox[{"t", " ", "=", " ", 
+               RowBox[{"countColors", "[", 
+                RowBox[{
+                "board", ",", " ", "colCurrent", ",", " ", "colEnemy", ",", 
+                 " ", "i", ",", " ", "j", ",", " ", "dx", ",", " ", "dy"}], 
+                "]"}]}], ";", " ", 
+              RowBox[{"s", " ", "=", " ", 
+               RowBox[{"s", " ", "+", " ", "t"}]}]}]}], "]"}]}], "]"}]}], 
+        "]"}], ";", " ", "s"}], ")"}]}], ";"}], "\[IndentingNewLine]", 
+   "\[IndentingNewLine]", 
+   RowBox[{"(*", " ", 
+    RowBox[{
+     RowBox[{
+     "Zwraca", " ", "True", " ", "je\:015bli", " ", "aktualny", " ", "gracz", 
+      " ", "mo\:017ce", " ", "wykona\[CAcute]", " ", "ruch"}], ",", " ", 
+     RowBox[{"w", " ", 
+      RowBox[{"p", ".", " ", "p", ".", " ", "zwraca"}], " ", 
+      RowBox[{"False", "."}]}]}], " ", "*)"}], "\[IndentingNewLine]", 
+   RowBox[{
+    RowBox[{
+     RowBox[{"existLegalMove", "[", 
+      RowBox[{"board_", ",", " ", "colCurrent_", ",", " ", "colEnemy_"}], 
+      "]"}], " ", ":=", " ", 
+     RowBox[{"(", 
+      RowBox[{
+       RowBox[{"legal", " ", "=", " ", "False"}], ";", 
+       RowBox[{"For", "[", 
+        RowBox[{
+         RowBox[{"i", " ", "=", " ", "1"}], ",", " ", 
+         RowBox[{"i", " ", "\[LessEqual]", " ", "8"}], ",", " ", 
+         RowBox[{"i", "++"}], ",", " ", 
+         RowBox[{"For", "[", 
+          RowBox[{
+           RowBox[{"j", " ", "=", " ", "1"}], ",", " ", 
+           RowBox[{"j", " ", "\[LessEqual]", " ", "8"}], ",", " ", 
+           RowBox[{"j", "++"}], ",", " ", 
+           RowBox[{"If", "[", 
+            RowBox[{
+             RowBox[{
+              RowBox[{
+               RowBox[{
+                RowBox[{"board", "[", 
+                 RowBox[{"[", "i", "]"}], "]"}], "[", 
+                RowBox[{"[", "j", "]"}], "]"}], " ", "\[Equal]", " ", 
+               "Green"}], " ", "&&", " ", 
+              RowBox[{
+               RowBox[{"countNeighbours", "[", 
+                RowBox[{
+                "board", ",", " ", "colCurrent", ",", " ", "colEnemy", ",", 
+                 " ", "i", ",", " ", "j"}], "]"}], " ", ">", " ", "0"}]}], 
+             ",", " ", 
+             RowBox[{
+              RowBox[{"legal", " ", "=", " ", "True"}], ";", " ", 
+              RowBox[{"Break", "[", "]"}]}]}], "]"}]}], "]"}]}], "]"}], ";", 
+       " ", "legal"}], ")"}]}], ";"}], "\[IndentingNewLine]", 
+   "\[IndentingNewLine]", 
+   RowBox[{"(*", " ", 
+    RowBox[{"Zwraca", " ", "kopi\:0119", " ", 
+     RowBox[{"planszy", "."}]}], " ", "*)"}], "\[IndentingNewLine]", 
+   RowBox[{
+    RowBox[{
+     RowBox[{"copyBoard", "[", "board_", "]"}], " ", ":=", " ", 
+     RowBox[{"(", 
+      RowBox[{
+       RowBox[{"a", " ", "=", " ", 
+        RowBox[{"Table", "[", 
+         RowBox[{
+          RowBox[{"Table", "[", 
+           RowBox[{
+            RowBox[{
+             RowBox[{"board", "[", 
+              RowBox[{"[", "i", "]"}], "]"}], "[", 
+             RowBox[{"[", "j", "]"}], "]"}], ",", " ", 
+            RowBox[{"{", 
+             RowBox[{"j", ",", " ", "1", ",", " ", "8"}], "}"}]}], "]"}], ",",
+           " ", 
+          RowBox[{"{", 
+           RowBox[{"i", ",", " ", "1", ",", " ", "8"}], "}"}]}], "]"}]}], ";",
+        " ", "a"}], ")"}]}], ";"}], "\[IndentingNewLine]", 
+   "\[IndentingNewLine]", 
+   RowBox[{"(*", " ", 
+    RowBox[{
+     RowBox[{
+     "Stawia", " ", "na", " ", "polu", " ", "o", " ", 
+      "wsp\[OAcute]\[LSlash]rz\:0119dnych", " ", 
+      RowBox[{"(", 
+       RowBox[{"i", ",", " ", "j"}], ")"}], " ", "kamie\:0144", " ", 
+      "aktualnego", " ", 
+      RowBox[{"gracza", ".", " ", "Dokonuje"}], " ", "odwr\[OAcute]cenia", 
+      " ", "kamieni", " ", "we", " ", "wszystkich", " ", "kierunkach"}], ",", 
+     " ", 
+     RowBox[{"w", " ", "kt\[OAcute]rych", " ", "mo\:017cna", " ", 
+      RowBox[{"odwr\[OAcute]ci\[CAcute]", ".", " ", "Zwraca"}], " ", 
+      RowBox[{"plansz\:0119", "."}]}]}], " ", "*)"}], "\[IndentingNewLine]", 
+   RowBox[{
+    RowBox[{
+     RowBox[{"makeMove", "[", 
+      RowBox[{
+      "board_", ",", " ", "colCurrent_", ",", " ", "colEnemy_", ",", " ", 
+       "i_", ",", " ", "j_"}], "]"}], " ", ":=", " ", 
+     RowBox[{"(", 
+      RowBox[{
+       RowBox[{"a", " ", "=", " ", 
+        RowBox[{"copyBoard", "[", "board", "]"}]}], ";", " ", 
+       RowBox[{
+        RowBox[{
+         RowBox[{"a", "[", 
+          RowBox[{"[", "i", "]"}], "]"}], "[", 
+         RowBox[{"[", "j", "]"}], "]"}], " ", "=", " ", "colCurrent"}], ";", 
+       " ", 
+       RowBox[{"For", "[", 
+        RowBox[{
+         RowBox[{"dx", " ", "=", " ", 
+          RowBox[{"-", "1"}]}], ",", " ", 
+         RowBox[{"dx", " ", "\[LessEqual]", " ", "1"}], ",", 
+         RowBox[{"dx", "++"}], ",", " ", 
+         RowBox[{"For", "[", 
+          RowBox[{
+           RowBox[{"dy", " ", "=", " ", 
+            RowBox[{"-", "1"}]}], ",", " ", 
+           RowBox[{"dy", " ", "\[LessEqual]", " ", "1"}], ",", " ", 
+           RowBox[{"dy", "++"}], ",", " ", 
+           RowBox[{"If", "[", 
+            RowBox[{
+             RowBox[{
+              RowBox[{"(", 
+               RowBox[{
+                RowBox[{"dx", " ", "\[NotEqual]", " ", "0"}], " ", "||", " ", 
+                
+                RowBox[{"dy", " ", "\[NotEqual]", " ", "0"}]}], ")"}], " ", "&&",
+               "  ", 
+              RowBox[{
+               RowBox[{"countColors", "[", 
+                RowBox[{
+                "a", ",", " ", "colCurrent", ",", " ", "colEnemy", ",", " ", 
+                 "i", ",", " ", "j", ",", " ", "dx", ",", " ", "dy"}], "]"}], 
+               " ", ">", " ", "0"}]}], ",", " ", 
+             RowBox[{
+              RowBox[{"x", " ", "=", " ", 
+               RowBox[{"i", " ", "+", " ", "dx"}]}], ";", " ", 
+              RowBox[{"y", " ", "=", " ", 
+               RowBox[{"j", " ", "+", " ", "dy"}]}], ";", " ", 
+              RowBox[{"While", "[", 
+               RowBox[{
+                RowBox[{
+                 RowBox[{
+                  RowBox[{"a", "[", 
+                   RowBox[{"[", "x", "]"}], "]"}], "[", 
+                  RowBox[{"[", "y", "]"}], "]"}], " ", "\[Equal]", " ", 
+                 "colEnemy"}], ",", " ", 
+                RowBox[{
+                 RowBox[{
+                  RowBox[{
+                   RowBox[{"a", "[", 
+                    RowBox[{"[", "x", "]"}], "]"}], "[", 
+                   RowBox[{"[", "y", "]"}], "]"}], " ", "=", " ", 
+                  "colCurrent"}], ";", " ", 
+                 RowBox[{"x", " ", "=", " ", 
+                  RowBox[{"x", " ", "+", "dx"}]}], ";", " ", 
+                 RowBox[{"y", " ", "=", " ", 
+                  RowBox[{"y", " ", "+", " ", "dy"}]}]}]}], "]"}]}]}], 
+            "]"}]}], "]"}]}], "]"}], ";", " ", "a"}], ")"}]}], ";"}], 
+   "\[IndentingNewLine]", "\[IndentingNewLine]", 
+   RowBox[{"(*", " ", 
+    RowBox[{
+     RowBox[{
+     "Zwraca", " ", "True", " ", "gdy", " ", "aktualny", " ", "gracz", " ", 
+      "mo\:017ce", " ", "po\[LSlash]o\:017cy\[CAcute]", " ", "sw\[OAcute]j", 
+      " ", "kamie\:0144", " ", "na", " ", "polu", " ", "o", " ", 
+      "wsp\[OAcute]\[LSlash]rz\:0119dnych", " ", 
+      RowBox[{"(", 
+       RowBox[{"i", ",", " ", "j"}], ")"}]}], ",", " ", 
+     RowBox[{"w", " ", 
+      RowBox[{"p", ".", " ", "p", ".", " ", "zwraca"}], " ", 
+      RowBox[{"False", "."}]}]}], " ", "*)"}], "\[IndentingNewLine]", 
+   RowBox[{
+    RowBox[{
+     RowBox[{"isLegalMove", "[", 
+      RowBox[{
+      "board_", ",", " ", "colCurrent_", ",", " ", "colEnemy_", ",", " ", 
+       "i_", ",", " ", "j_"}], "]"}], " ", ":=", " ", 
+     RowBox[{"If", "[", 
+      RowBox[{
+       RowBox[{
+        RowBox[{
+         RowBox[{
+          RowBox[{"board", "[", 
+           RowBox[{"[", "i", "]"}], "]"}], "[", 
+          RowBox[{"[", "j", "]"}], "]"}], " ", "\[Equal]", " ", "Green"}], 
+        " ", "&&", " ", 
+        RowBox[{
+         RowBox[{"countNeighbours", "[", 
+          RowBox[{
+          "board", ",", " ", "colCurrent", ",", " ", "colEnemy", ",", " ", 
+           "i", ",", " ", "j"}], "]"}], " ", ">", " ", "0"}]}], ",", " ", 
+       "True", ",", " ", "False"}], "]"}]}], ";"}], "\[IndentingNewLine]", 
+   "\[IndentingNewLine]", 
+   RowBox[{"(*", " ", 
+    RowBox[{
+     RowBox[{
+     "Zwraca", " ", "pocz\:0105tkow\:0105", " ", "zawarto\:015b\[CAcute]", 
+      " ", "planszy", " ", "w", " ", "zale\:017cno\:015bci"}], ",", " ", 
+     RowBox[{"kt\[OAcute]ry", " ", "gracz", " ", 
+      RowBox[{"zaczyna", "."}]}]}], " ", "*)"}], "\[IndentingNewLine]", 
+   RowBox[{
+    RowBox[{
+     RowBox[{"getBoard", "[", "color_", "]"}], " ", ":=", " ", 
+     RowBox[{"(", 
+      RowBox[{
+       RowBox[{"a", " ", "=", " ", 
+        RowBox[{"Table", "[", 
+         RowBox[{
+          RowBox[{"Table", "[", 
+           RowBox[{"Green", ",", " ", 
+            RowBox[{"{", "8", "}"}]}], "]"}], ",", " ", 
+          RowBox[{"{", "8", "}"}]}], "]"}]}], ";", " ", 
+       RowBox[{"If", "[", 
+        RowBox[{
+         RowBox[{"color", " ", "\[Equal]", " ", "Black"}], ",", " ", 
+         RowBox[{
+          RowBox[{
+           RowBox[{
+            RowBox[{"a", "[", 
+             RowBox[{"[", "4", "]"}], "]"}], "[", 
+            RowBox[{"[", "4", "]"}], "]"}], " ", "=", " ", "Black"}], ";", 
+          " ", 
+          RowBox[{
+           RowBox[{
+            RowBox[{"a", "[", 
+             RowBox[{"[", "5", "]"}], "]"}], "[", 
+            RowBox[{"[", "5", "]"}], "]"}], " ", "=", " ", "Black"}], ";", 
+          " ", 
+          RowBox[{
+           RowBox[{
+            RowBox[{"a", "[", 
+             RowBox[{"[", "4", "]"}], "]"}], "[", 
+            RowBox[{"[", "5", "]"}], "]"}], " ", "=", " ", "White"}], ";", 
+          " ", 
+          RowBox[{
+           RowBox[{
+            RowBox[{"a", "[", 
+             RowBox[{"[", "5", "]"}], "]"}], "[", 
+            RowBox[{"[", "4", "]"}], "]"}], " ", "=", " ", "White"}]}]}], 
+        "]"}], ";", " ", "\[IndentingNewLine]", 
+       RowBox[{"If", "[", 
+        RowBox[{
+         RowBox[{"color", " ", "\[Equal]", " ", "White"}], ",", " ", 
+         RowBox[{
+          RowBox[{
+           RowBox[{
+            RowBox[{"a", "[", 
+             RowBox[{"[", "4", "]"}], "]"}], "[", 
+            RowBox[{"[", "4", "]"}], "]"}], " ", "=", " ", "Black"}], ";", 
+          " ", 
+          RowBox[{
+           RowBox[{
+            RowBox[{"a", "[", 
+             RowBox[{"[", "5", "]"}], "]"}], "[", 
+            RowBox[{"[", "5", "]"}], "]"}], " ", "=", " ", "Black"}], ";", 
+          " ", 
+          RowBox[{
+           RowBox[{
+            RowBox[{"a", "[", 
+             RowBox[{"[", "4", "]"}], "]"}], "[", 
+            RowBox[{"[", "5", "]"}], "]"}], " ", "=", " ", "Black"}], ";", 
+          " ", 
+          RowBox[{
+           RowBox[{
+            RowBox[{"a", "[", 
+             RowBox[{"[", "3", "]"}], "]"}], "[", 
+            RowBox[{"[", "5", "]"}], "]"}], " ", "=", " ", "Black"}], ";", 
+          " ", 
+          RowBox[{
+           RowBox[{
+            RowBox[{"a", "[", 
+             RowBox[{"[", "5", "]"}], "]"}], "[", 
+            RowBox[{"[", "4", "]"}], "]"}], " ", "=", " ", "White"}]}]}], 
+        "]"}], ";", " ", "a"}], ")"}]}], ";"}], "\[IndentingNewLine]", 
+   "\[IndentingNewLine]", 
+   RowBox[{"(*", " ", 
+    RowBox[{
+     RowBox[{
+     "Zwraca", " ", "pocz\:0105tkow\:0105", " ", "liczb\:0119", " ", 
+      "punkt\[OAcute]w", " ", "w", " ", "zale\:017cno\:015bci"}], ",", " ", 
+     RowBox[{
+     "kt\[OAcute]ry", " ", "gracz", " ", "zaczyna", " ", "i", " ", "jaki", 
+      " ", "ma", " ", 
+      RowBox[{"kolor", "."}]}]}], " ", "*)"}], "\[IndentingNewLine]", 
+   RowBox[{
+    RowBox[{
+     RowBox[{"getPoints", "[", 
+      RowBox[{"firstPlayer_", ",", " ", "color_"}], "]"}], " ", ":=", " ", 
+     RowBox[{"(", 
+      RowBox[{
+       RowBox[{"result", " ", "=", " ", "0"}], ";", " ", 
+       "\[IndentingNewLine]", 
+       RowBox[{"If", "[", 
+        RowBox[{
+         RowBox[{"firstPlayer", " ", "\[Equal]", " ", "Black"}], ",", " ", 
+         RowBox[{"result", " ", "=", " ", "2"}]}], "]"}], ";", 
+       "\[IndentingNewLine]", 
+       RowBox[{"If", "[", 
+        RowBox[{
+         RowBox[{"firstPlayer", " ", "\[Equal]", " ", "White"}], ",", " ", 
+         "\[IndentingNewLine]", 
+         RowBox[{
+          RowBox[{"If", "[", 
+           RowBox[{
+            RowBox[{"color", " ", "\[Equal]", " ", "Black"}], ",", " ", 
+            RowBox[{"result", " ", "=", " ", "4"}]}], "]"}], ";", " ", 
+          "\[IndentingNewLine]", 
+          RowBox[{"If", "[", 
+           RowBox[{
+            RowBox[{"color", " ", "\[Equal]", " ", "White"}], ",", " ", 
+            RowBox[{"result", " ", "=", " ", "1"}]}], "]"}]}]}], "]"}], ";", 
+       " ", "result"}], ")"}]}], ";"}], "\[IndentingNewLine]", 
+   "\[IndentingNewLine]", 
+   RowBox[{"(*", " ", 
+    RowBox[{
+    "Zwraca", " ", "liczb\:0119", " ", "punkt\[OAcute]w", " ", 
+     "nale\:017c\:0105cych", " ", "do", " ", 
+     RowBox[{"gracza", "."}]}], " ", "*)"}], "\[IndentingNewLine]", 
+   RowBox[{
+    RowBox[{
+     RowBox[{"countPoints", "[", 
+      RowBox[{"board_", ",", " ", "color_"}], "]"}], " ", ":=", " ", 
+     RowBox[{"(", 
+      RowBox[{
+       RowBox[{"n", " ", "=", " ", "0"}], ";", " ", 
+       RowBox[{"For", "[", 
+        RowBox[{
+         RowBox[{"i", " ", "=", " ", "1"}], ",", " ", 
+         RowBox[{"i", " ", "\[LessEqual]", " ", "8"}], ",", " ", 
+         RowBox[{"i", "++"}], ",", " ", 
+         RowBox[{"For", "[", 
+          RowBox[{
+           RowBox[{"j", " ", "=", " ", "1"}], ",", " ", 
+           RowBox[{"j", " ", "\[LessEqual]", " ", "8"}], ",", " ", 
+           RowBox[{"j", "++"}], ",", " ", 
+           RowBox[{"If", "[", 
+            RowBox[{
+             RowBox[{
+              RowBox[{
+               RowBox[{"board", "[", 
+                RowBox[{"[", "i", "]"}], "]"}], "[", 
+               RowBox[{"[", "j", "]"}], "]"}], " ", "\[Equal]", " ", 
+              "color"}], ",", " ", 
+             RowBox[{"n", "++"}]}], "]"}]}], "]"}]}], "]"}], ";", " ", "n"}], 
+      ")"}]}], ";"}], "\[IndentingNewLine]", "\[IndentingNewLine]", 
+   RowBox[{"(*", " ", 
+    RowBox[{"Zwraca", " ", "zwyci\:0119zc\:0119", " ", 
+     RowBox[{"gry", "."}]}], " ", "*)"}], "\[IndentingNewLine]", 
+   RowBox[{
+    RowBox[{
+     RowBox[{"getWinner", "[", 
+      RowBox[{"counterBlack_", ",", " ", "counterWhite_"}], "]"}], " ", ":=", 
+     " ", 
+     RowBox[{"If", "[", 
+      RowBox[{
+       RowBox[{"counterBlack", " ", ">", " ", "counterWhite"}], ",", " ", 
+       "Black", ",", " ", "White"}], "]"}]}], ";"}], "\[IndentingNewLine]", 
+   "\[IndentingNewLine]", 
+   RowBox[{"(*", " ", 
+    RowBox[{"Sprawdza", " ", "czy", " ", "gracze", " ", 
+     RowBox[{"zremisowali", "."}]}], " ", "*)"}], "\[IndentingNewLine]", 
+   RowBox[{
+    RowBox[{
+     RowBox[{"isDraw", "[", 
+      RowBox[{"counter1_", ",", " ", "counter2_"}], "]"}], " ", ":=", " ", 
+     RowBox[{"If", "[", 
+      RowBox[{
+       RowBox[{"counter1", " ", "\[Equal]", " ", "counter2"}], ",", " ", 
+       "True", ",", " ", "False"}], "]"}]}], ";"}], "\[IndentingNewLine]", 
+   "\[IndentingNewLine]", 
+   RowBox[{"(*", " ", 
+    RowBox[{
+    "Wypisuje", " ", "informacj\:0119", " ", "o", " ", "ko\:0144cu", " ", 
+     RowBox[{"gry", "."}]}], " ", "*)"}], "\[IndentingNewLine]", 
+   RowBox[{
+    RowBox[{
+     RowBox[{"rundownOnEnd", "[", 
+      RowBox[{"counterBlack_", ",", " ", "counterWhite_"}], "]"}], " ", ":=", 
+     " ", 
+     RowBox[{"(", 
+      RowBox[{"If", "[", 
+       RowBox[{
+        RowBox[{
+         RowBox[{"isDraw", "[", 
+          RowBox[{"counterBlack", ",", " ", "counterWhite"}], "]"}], " ", 
+         "\[Equal]", " ", "True"}], ",", " ", "\[IndentingNewLine]", 
+        RowBox[{"Print", "[", "\"\<Tie game.\>\"", "]"}], ",", " ", 
+        "\[IndentingNewLine]", 
+        RowBox[{
+         RowBox[{"winner", " ", "=", " ", 
+          RowBox[{"getWinner", "[", 
+           RowBox[{"counterBlack", ",", " ", "counterWhite"}], "]"}]}], ";", 
+         " ", 
+         RowBox[{"Print", "[", 
+          RowBox[{
+          "\"\<Player \>\"", ",", " ", "winner", ",", " ", 
+           "\"\< won the game.\>\""}], "]"}]}]}], "]"}], ")"}]}], ";"}], 
+   "\[IndentingNewLine]", "\[IndentingNewLine]", 
+   RowBox[{"(*", " ", 
+    RowBox[{
+    "Uruchamia", " ", "gr\:0119", " ", "dla", " ", "dw\[OAcute]ch", " ", 
+     "ludzkich", " ", 
+     RowBox[{"graczy", "."}]}], " ", "*)"}], "\[IndentingNewLine]", 
+   RowBox[{
+    RowBox[{
+     RowBox[{"gamePlayerVsPlayer", "[", "]"}], " ", ":=", " ", 
+     RowBox[{"(", 
+      RowBox[{"DynamicModule", "[", 
+       RowBox[{
+        RowBox[{"{", 
+         RowBox[{
+          RowBox[{"board", " ", "=", " ", 
+           RowBox[{"getBoard", "[", "Black", "]"}]}], ",", " ", 
+          RowBox[{"counterBlack", " ", "=", " ", "2"}], ",", " ", 
+          RowBox[{"counterWhite", " ", "=", " ", "2"}], ",", " ", 
+          "\[IndentingNewLine]", 
+          RowBox[{"colCurrent", " ", "=", " ", "Black"}], ",", " ", 
+          RowBox[{"colEnemy", " ", "=", " ", "White"}]}], "}"}], ",", 
+        RowBox[{"Column", "[", 
+         RowBox[{"{", 
+          RowBox[{
+           RowBox[{"Graphics", "[", 
+            RowBox[{
+             RowBox[{"Table", "[", 
+              RowBox[{
+               RowBox[{"Table", "[", 
+                RowBox[{
+                 RowBox[{"With", "[", 
+                  RowBox[{
+                   RowBox[{"{", 
+                    RowBox[{
+                    RowBox[{"i", "=", "i"}], ",", " ", 
+                    RowBox[{"j", " ", "=", " ", "j"}]}], "}"}], ",", 
+                   RowBox[{"EventHandler", "[", 
+                    RowBox[{
+                    RowBox[{"{", 
+                    RowBox[{"Green", ",", 
+                    RowBox[{"EdgeForm", "[", "Black", "]"}], ",", 
+                    RowBox[{"Rectangle", "[", 
+                    RowBox[{
+                    RowBox[{"{", 
+                    RowBox[{"i", ",", " ", "j"}], "}"}], ",", " ", 
+                    RowBox[{"{", 
+                    RowBox[{
+                    RowBox[{"i", " ", "+", " ", "1"}], ",", " ", 
+                    RowBox[{"j", "+", " ", "1"}]}], "}"}]}], "]"}], ",", " ", 
+                    
+                    RowBox[{"Dynamic", "[", 
+                    RowBox[{
+                    RowBox[{"board", "[", 
+                    RowBox[{"[", "i", "]"}], "]"}], "[", 
+                    RowBox[{"[", "j", "]"}], "]"}], "]"}], ",", 
+                    RowBox[{"EdgeForm", "[", "Green", "]"}], ",", " ", 
+                    RowBox[{"Disk", "[", 
+                    RowBox[{
+                    RowBox[{"{", 
+                    RowBox[{
+                    RowBox[{"i", " ", "+", " ", "0.5"}], ",", " ", 
+                    RowBox[{"j", " ", "+", " ", "0.5"}]}], "}"}], ",", " ", 
+                    "0.4"}], "]"}]}], "}"}], ",", 
+                    RowBox[{"{", 
+                    RowBox[{"\"\<MouseClicked\>\"", "\[RuleDelayed]", 
+                    RowBox[{"(", 
+                    RowBox[{"If", "[", 
+                    RowBox[{
+                    RowBox[{
+                    RowBox[{"isLegalMove", "[", 
+                    RowBox[{
+                    "board", ",", " ", "colCurrent", ",", " ", "colEnemy", 
+                    ",", " ", "i", ",", " ", "j"}], "]"}], " ", "\[Equal]", 
+                    " ", "True"}], ",", "\[IndentingNewLine]", 
+                    RowBox[{
+                    RowBox[{"board", " ", "=", " ", 
+                    RowBox[{"makeMove", "[", 
+                    RowBox[{
+                    "board", ",", " ", "colCurrent", ",", " ", "colEnemy", 
+                    ",", " ", "i", ",", " ", "j"}], "]"}]}], ";", 
+                    "\[IndentingNewLine]", 
+                    RowBox[{"counterBlack", " ", "=", " ", 
+                    RowBox[{"countPoints", "[", 
+                    RowBox[{"board", ",", " ", "Black"}], "]"}]}], ";", " ", 
+                    "\[IndentingNewLine]", 
+                    RowBox[{"counterWhite", " ", "=", " ", 
+                    RowBox[{"countPoints", "[", 
+                    RowBox[{"board", ",", " ", "White"}], "]"}]}], ";", " ", 
+                    "\[IndentingNewLine]", 
+                    RowBox[{"If", "[", 
+                    RowBox[{
+                    RowBox[{
+                    RowBox[{"existLegalMove", "[", 
+                    RowBox[{
+                    "board", ",", " ", "colEnemy", ",", " ", "colCurrent"}], 
+                    "]"}], " ", "\[Equal]", " ", "True"}], ",", " ", 
+                    RowBox[{
+                    RowBox[{"tmp", " ", "=", "  ", "colCurrent"}], ";", " ", 
+                    RowBox[{"colCurrent", " ", "=", " ", "colEnemy"}], ";", 
+                    " ", 
+                    RowBox[{"colEnemy", " ", "=", " ", "tmp"}]}], ",", " ", 
+                    RowBox[{"If", "[", 
+                    RowBox[{
+                    RowBox[{
+                    RowBox[{"existLegalMove", "[", 
+                    RowBox[{
+                    "board", ",", " ", "colCurrent", ",", " ", "colEnemy"}], 
+                    "]"}], " ", "\[Equal]", " ", "True"}], ",", " ", 
+                    RowBox[{"Print", "[", 
+                    RowBox[{
+                    "\"\<Player \>\"", ",", " ", "colEnemy", ",", " ", 
+                    "\"\< cannot make a move and loses his turn.\>\""}], 
+                    "]"}], ",", " ", "\[IndentingNewLine]", 
+                    RowBox[{"rundownOnEnd", "[", 
+                    RowBox[{"counterBlack", ",", " ", "counterWhite"}], 
+                    "]"}]}], "\[IndentingNewLine]", "]"}]}], "]"}], ";"}]}], 
+                    "\[IndentingNewLine]", "]"}], ")"}]}], "}"}]}], 
+                    "\[IndentingNewLine]", "]"}]}], "]"}], ",", 
+                 RowBox[{"{", 
+                  RowBox[{"i", ",", "1", ",", "8"}], "}"}]}], "]"}], ",", 
+               RowBox[{"{", 
+                RowBox[{"j", ",", " ", "1", ",", " ", "8"}], "}"}]}], "]"}], 
+             ",", 
+             RowBox[{"PlotRange", "\[Rule]", "All"}]}], "]"}], ",", " ", 
+           RowBox[{"Dynamic", "[", "\"\<black:\>\"", "]"}], ",", " ", 
+           RowBox[{"Dynamic", "[", "counterBlack", "]"}], ",", " ", 
+           RowBox[{"Dynamic", "[", "\"\<white:\>\"", "]"}], ",", 
+           RowBox[{"Dynamic", "[", "counterWhite", "]"}], ",", " ", 
+           RowBox[{"Dynamic", "[", "colCurrent", "]"}], ",", 
+           RowBox[{"Dynamic", "[", "\"\<current player\>\"", "]"}]}], "}"}], 
+         "]"}]}], "]"}], ")"}]}], ";"}], "\[IndentingNewLine]", 
+   "\[IndentingNewLine]", 
+   RowBox[{"(*", " ", 
+    RowBox[{
+     RowBox[{
+     "Zwraca", " ", "list\:0119", " ", "legalnych", " ", "posunie\[CAcute]"}],
+      ",", " ", 
+     RowBox[{
+     "kt\[OAcute]re", " ", "mo\:017ce", " ", "wykona\[CAcute]", " ", "gracz", 
+      " ", 
+      RowBox[{"komputerowy", "."}]}]}], " ", "*)"}], "\[IndentingNewLine]", 
+   RowBox[{
+    RowBox[{
+     RowBox[{"getListLegalPositions", "[", 
+      RowBox[{"board_", ",", " ", "colPlayer_", ",", " ", "colComputer_"}], 
+      "]"}], " ", ":=", " ", 
+     RowBox[{"(", 
+      RowBox[{
+       RowBox[{"l", " ", "=", " ", 
+        RowBox[{"{", "}"}]}], ";", " ", 
+       RowBox[{"For", "[", 
+        RowBox[{
+         RowBox[{"i", " ", "=", " ", "1"}], ",", " ", 
+         RowBox[{"i", " ", "\[LessEqual]", "8"}], ",", " ", 
+         RowBox[{"i", "++"}], ",", " ", 
+         RowBox[{"For", "[", 
+          RowBox[{
+           RowBox[{"j", " ", "=", " ", "1"}], ",", " ", 
+           RowBox[{"j", " ", "\[LessEqual]", " ", "8"}], ",", " ", 
+           RowBox[{"j", "++"}], ",", " ", 
+           RowBox[{"If", "[", 
+            RowBox[{
+             RowBox[{
+              RowBox[{"isLegalMove", "[", 
+               RowBox[{
+               "board", ",", " ", "colComputer", ",", " ", "colPlayer", ",", 
+                " ", "i", ",", " ", "j"}], "]"}], " ", "\[Equal]", " ", 
+              "True"}], ",", " ", 
+             RowBox[{"AppendTo", "[", 
+              RowBox[{"l", ",", " ", 
+               RowBox[{"{", 
+                RowBox[{"i", ",", " ", "j"}], "}"}]}], "]"}]}], "]"}]}], 
+          "]"}]}], "]"}], ";", " ", "l"}], ")"}]}], ";"}], 
+   "\[IndentingNewLine]", "\[IndentingNewLine]", 
+   RowBox[{"(*", " ", 
+    RowBox[{"Uruchamia", " ", "gr\:0119", " ", "przeciwko", " ", 
+     RowBox[{"komputerowi", "."}]}], " ", "*)"}], "\[IndentingNewLine]", 
+   RowBox[{
+    RowBox[{
+     RowBox[{"gamePlayerVsComputer", "[", 
+      RowBox[{"firstPlayer_", ",", " ", "secondPlayer_"}], "]"}], " ", ":=", 
+     " ", 
+     RowBox[{"(", 
+      RowBox[{"DynamicModule", "[", 
+       RowBox[{
+        RowBox[{"{", 
+         RowBox[{
+          RowBox[{"board", " ", "=", " ", 
+           RowBox[{"getBoard", "[", "firstPlayer", "]"}]}], ",", " ", 
+          "\[IndentingNewLine]", 
+          RowBox[{"counterBlack", " ", "=", " ", 
+           RowBox[{"getPoints", "[", 
+            RowBox[{"firstPlayer", ",", " ", "Black"}], "]"}]}], ",", " ", 
+          RowBox[{"counterWhite", " ", "=", " ", 
+           RowBox[{"getPoints", "[", 
+            RowBox[{"firstPlayer", ",", " ", "White"}], "]"}]}], ",", " ", 
+          "\[IndentingNewLine]", 
+          RowBox[{"colCurrent", " ", "=", " ", "firstPlayer"}], ",", " ", 
+          RowBox[{"colEnemy", " ", "=", " ", "secondPlayer"}]}], "}"}], ",", 
+        RowBox[{"Column", "[", 
+         RowBox[{"{", 
+          RowBox[{
+           RowBox[{"Graphics", "[", " ", 
+            RowBox[{
+             RowBox[{"Table", "[", 
+              RowBox[{
+               RowBox[{"Table", "[", 
+                RowBox[{
+                 RowBox[{"With", "[", 
+                  RowBox[{
+                   RowBox[{"{", 
+                    RowBox[{
+                    RowBox[{"i", " ", "=", " ", "i"}], ",", " ", 
+                    RowBox[{"j", " ", "=", " ", "j"}]}], "}"}], ",", 
+                   RowBox[{"EventHandler", "[", 
+                    RowBox[{
+                    RowBox[{"{", 
+                    RowBox[{"Green", ",", 
+                    RowBox[{"EdgeForm", "[", "Black", "]"}], ",", 
+                    RowBox[{"Rectangle", "[", 
+                    RowBox[{
+                    RowBox[{"{", 
+                    RowBox[{"i", ",", " ", "j"}], "}"}], ",", " ", 
+                    RowBox[{"{", 
+                    RowBox[{
+                    RowBox[{"i", " ", "+", " ", "1"}], ",", " ", 
+                    RowBox[{"j", "+", " ", "1"}]}], "}"}]}], "]"}], ",", " ", 
+                    
+                    RowBox[{"Dynamic", "[", 
+                    RowBox[{
+                    RowBox[{"board", "[", 
+                    RowBox[{"[", "i", "]"}], "]"}], "[", 
+                    RowBox[{"[", "j", "]"}], "]"}], "]"}], ",", 
+                    RowBox[{"EdgeForm", "[", "Green", "]"}], ",", " ", 
+                    RowBox[{"Disk", "[", 
+                    RowBox[{
+                    RowBox[{"{", 
+                    RowBox[{
+                    RowBox[{"i", " ", "+", " ", "0.5"}], ",", " ", 
+                    RowBox[{"j", " ", "+", " ", "0.5"}]}], "}"}], ",", " ", 
+                    "0.4"}], "]"}]}], "}"}], ",", 
+                    RowBox[{"{", 
+                    RowBox[{"\"\<MouseClicked\>\"", "\[RuleDelayed]", 
+                    RowBox[{"(", "\[IndentingNewLine]", 
+                    RowBox[{"If", "[", 
+                    RowBox[{
+                    RowBox[{
+                    RowBox[{"isLegalMove", "[", 
+                    RowBox[{
+                    "board", ",", " ", "colCurrent", ",", " ", "colEnemy", 
+                    ",", " ", "i", ",", " ", "j"}], "]"}], " ", "\[Equal]", 
+                    " ", "True"}], ",", " ", 
+                    RowBox[{
+                    RowBox[{"board", " ", "=", " ", 
+                    RowBox[{"makeMove", "[", 
+                    RowBox[{
+                    "board", ",", " ", "colCurrent", ",", " ", "colEnemy", 
+                    ",", " ", "i", ",", " ", "j"}], "]"}]}], ";", 
+                    "\[IndentingNewLine]", 
+                    RowBox[{"counterBlack", " ", "=", " ", 
+                    RowBox[{"countPoints", "[", 
+                    RowBox[{"board", ",", " ", "Black"}], "]"}]}], ";", " ", 
+                    "\[IndentingNewLine]", 
+                    RowBox[{"counterWhite", " ", "=", " ", 
+                    RowBox[{"countPoints", "[", 
+                    RowBox[{"board", ",", " ", "White"}], "]"}]}], ";", 
+                    "\[IndentingNewLine]", 
+                    RowBox[{"l", " ", "=", " ", 
+                    RowBox[{"getListLegalPositions", "[", 
+                    RowBox[{
+                    "board", ",", " ", "colCurrent", ",", " ", "colEnemy"}], 
+                    "]"}]}], ";", "\[IndentingNewLine]", 
+                    RowBox[{"If", "[", 
+                    RowBox[{
+                    RowBox[{
+                    RowBox[{"Length", "[", "l", "]"}], " ", ">", " ", "0"}], 
+                    ",", " ", "\[IndentingNewLine]", 
+                    RowBox[{
+                    RowBox[{"n", " ", "=", "  ", 
+                    RowBox[{"RandomInteger", "[", 
+                    RowBox[{"{", 
+                    RowBox[{"1", ",", " ", 
+                    RowBox[{"Length", "[", "l", "]"}]}], "}"}], "]"}]}], ";", 
+                    "\[IndentingNewLine]", 
+                    RowBox[{"pos", "=", " ", 
+                    RowBox[{"l", "[", 
+                    RowBox[{"[", "n", "]"}], "]"}]}], ";", 
+                    "\[IndentingNewLine]", 
+                    RowBox[{"board", " ", "=", " ", 
+                    RowBox[{"makeMove", "[", 
+                    RowBox[{
+                    "board", ",", " ", "colEnemy", ",", " ", "colCurrent", 
+                    ",", " ", 
+                    RowBox[{"pos", "[", 
+                    RowBox[{"[", "1", "]"}], "]"}], ",", " ", 
+                    RowBox[{"pos", "[", 
+                    RowBox[{"[", "2", "]"}], "]"}]}], "]"}]}], ";", 
+                    "\[IndentingNewLine]", 
+                    RowBox[{"counterBlack", " ", "=", " ", 
+                    RowBox[{"countPoints", "[", 
+                    RowBox[{"board", ",", " ", "Black"}], "]"}]}], ";", " ", 
+                    "\[IndentingNewLine]", 
+                    RowBox[{"counterWhite", " ", "=", " ", 
+                    RowBox[{"countPoints", "[", 
+                    RowBox[{"board", ",", " ", "White"}], "]"}]}], ";", 
+                    "\[IndentingNewLine]", 
+                    RowBox[{"While", "[", 
+                    RowBox[{
+                    RowBox[{
+                    RowBox[{"existLegalMove", "[", 
+                    RowBox[{
+                    "board", ",", " ", "colCurrent", ",", " ", "colEnemy"}], 
+                    "]"}], " ", "\[Equal]", " ", "False"}], ",", " ", 
+                    "\[IndentingNewLine]", 
+                    RowBox[{
+                    RowBox[{"l", " ", "=", " ", 
+                    RowBox[{"getListLegalPositions", "[", 
+                    RowBox[{
+                    "board", ",", " ", "colCurrent", ",", " ", "colEnemy"}], 
+                    "]"}]}], ";", "\[IndentingNewLine]", 
+                    RowBox[{"If", "[", 
+                    RowBox[{
+                    RowBox[{
+                    RowBox[{"Length", "[", "l", "]"}], " ", ">", " ", "0"}], 
+                    ",", " ", "\[IndentingNewLine]", 
+                    RowBox[{
+                    RowBox[{"n", " ", "=", "  ", 
+                    RowBox[{"RandomInteger", "[", 
+                    RowBox[{"{", 
+                    RowBox[{"1", ",", " ", 
+                    RowBox[{"Length", "[", "l", "]"}]}], "}"}], "]"}]}], ";", 
+                    "\[IndentingNewLine]", 
+                    RowBox[{"pos", "=", " ", 
+                    RowBox[{"l", "[", 
+                    RowBox[{"[", "n", "]"}], "]"}]}], ";", 
+                    "\[IndentingNewLine]", 
+                    RowBox[{"board", " ", "=", " ", 
+                    RowBox[{"makeMove", "[", 
+                    RowBox[{
+                    "board", ",", " ", "colEnemy", ",", " ", "colCurrent", 
+                    ",", " ", 
+                    RowBox[{"pos", "[", 
+                    RowBox[{"[", "1", "]"}], "]"}], ",", " ", 
+                    RowBox[{"pos", "[", 
+                    RowBox[{"[", "2", "]"}], "]"}]}], "]"}]}], ";", 
+                    "\[IndentingNewLine]", 
+                    RowBox[{"counterBlack", " ", "=", " ", 
+                    RowBox[{"countPoints", "[", 
+                    RowBox[{"board", ",", " ", "Black"}], "]"}]}], ";", " ", 
+                    "\[IndentingNewLine]", 
+                    RowBox[{"counterWhite", " ", "=", " ", 
+                    RowBox[{"countPoints", "[", 
+                    RowBox[{"board", ",", " ", "White"}], "]"}]}], ";", 
+                    "\[IndentingNewLine]", 
+                    RowBox[{"Print", "[", 
+                    RowBox[{
+                    "\"\<Player \>\"", ",", " ", "colCurrent", ",", " ", 
+                    "\"\< cannot make a move and loses his turn.\>\""}], 
+                    "]"}]}], ",", "\[IndentingNewLine]", 
+                    RowBox[{
+                    RowBox[{"rundownOnEnd", "[", 
+                    RowBox[{"counterBlack", ",", " ", "counterWhite"}], "]"}],
+                     ";", " ", 
+                    RowBox[{"Break", "[", "]"}], ";"}]}], 
+                    "\[IndentingNewLine]", "]"}], ";"}]}], 
+                    "\[IndentingNewLine]", "]"}], ";"}], ",", " ", 
+                    "\[IndentingNewLine]", 
+                    RowBox[{"If", "[", 
+                    RowBox[{
+                    RowBox[{
+                    RowBox[{"existLegalMove", "[", 
+                    RowBox[{
+                    "board", ",", " ", "colCurrent", ",", " ", "colEnemy"}], 
+                    "]"}], " ", "\[Equal]", " ", "True"}], ",", 
+                    "\[IndentingNewLine]", " ", 
+                    RowBox[{"Print", "[", 
+                    RowBox[{
+                    "\"\<Player \>\"", ",", " ", "colEnemy", ",", " ", 
+                    "\"\< cannot make a move and loses his turn.\>\""}], 
+                    "]"}], ",", "\[IndentingNewLine]", " ", 
+                    RowBox[{"rundownOnEnd", "[", 
+                    RowBox[{"counterBlack", ",", " ", "counterWhite"}], 
+                    "]"}]}], "\[IndentingNewLine]", "]"}]}], 
+                    "\[IndentingNewLine]", "]"}], ";"}]}], " ", 
+                    "\[IndentingNewLine]", "]"}], ")"}]}], "}"}]}], 
+                    "\[IndentingNewLine]", "]"}]}], "]"}], ",", 
+                 RowBox[{"{", 
+                  RowBox[{"i", ",", "1", ",", "8"}], "}"}]}], "]"}], ",", 
+               RowBox[{"{", 
+                RowBox[{"j", ",", " ", "1", ",", " ", "8"}], "}"}]}], "]"}], 
+             ",", 
+             RowBox[{"PlotRange", "\[Rule]", "All"}]}], "]"}], ",", " ", 
+           RowBox[{"Dynamic", "[", "\"\<black:\>\"", "]"}], ",", " ", 
+           RowBox[{"Dynamic", "[", "counterBlack", "]"}], ",", " ", 
+           RowBox[{"Dynamic", "[", "\"\<white:\>\"", "]"}], ",", 
+           RowBox[{"Dynamic", "[", "counterWhite", "]"}], ",", " ", 
+           RowBox[{"Dynamic", "[", "colCurrent", "]"}], ",", 
+           RowBox[{"Dynamic", "[", "\"\<current player\>\"", "]"}]}], "}"}], 
+         "]"}]}], "]"}], ")"}]}], ";"}], "\[IndentingNewLine]", 
+   "\[IndentingNewLine]", 
+   RowBox[{"(*", " ", 
+    RowBox[{"Uruchamia", " ", "ekran", " ", "startowy", " ", 
+     RowBox[{"gry", "."}]}], " ", "*)"}], "\[IndentingNewLine]", 
+   RowBox[{
+    RowBox[{
+     RowBox[{"execute", "[", "]"}], " ", ":=", " ", 
+     RowBox[{"(", 
+      RowBox[{
+       RowBox[{"choice", " ", "=", " ", "0"}], ";", " ", 
+       RowBox[{"choice", " ", "=", "  ", 
+        RowBox[{"ChoiceDialog", "[", 
+         RowBox[{
+         "\"\<Gra Reversi\n\nCelem gry jest wype\[LSlash]nienie planszy o \
+rozmiarze 8 x 8 wi\:0119ksz\:0105 liczb\:0105 w\[LSlash]asnych pion\[OAcute]w \
+ni\:017c przeciwnik. Gra ko\:0144czy si\:0119, gdy \:017caden z graczy nie mo\
+\:017ce wykona\[CAcute] poprawnego ruchu, czyli:\n\n- gracze zape\[LSlash]ni\
+\:0105 plansz\:0119,\n- \:017caden z graczy nie mo\:017ce wykona\[CAcute] \
+ruchu,\n- jeden z graczy straci wszystkie swoje piony.\n\nWszystko rozpoczyna \
+si\:0119 od stanu, w kt\[OAcute]rym na planszy s\:0105 ju\:017c ustawione \
+cztery piony. S\:0105 to dwa piony czarne i dwa bia\[LSlash]e. Pierwszy ruch \
+wykonuje rozgrywaj\:0105cy piony czarne.\n\nPiony przeciwnika zdobywa \
+si\:0119, otaczaj\:0105c je w jednej linii. Zdobyte piony zmieniaj\:0105 \
+kolor i przynale\:017cno\:015b\[CAcute]. Na przyk\[LSlash]ad je\:015bli gracz \
+rozgrywaj\:0105cy piony czarne spostrze\:017ce lini\:0119 pion\[OAcute]w bia\
+\[LSlash]ych, na kt\[OAcute]rej jednym ko\:0144cu stoi pion czarny, mo\:017ce \
+dostawi\[CAcute] sw\[OAcute]j pion tak\:017ce na drugim ko\:0144cu linii. \
+Wszystkie otoczone bia\[LSlash]e piony zmieni\:0105 kolor na czarny (dotyczy \
+to wszystkich linii prostych: poziomych, pionowych i uko\:015bnych).\n\n\
+Jedyne dozwolone ruchy polegaj\:0105 na otaczaniu i zdobywaniu pion\[OAcute]w \
+przeciwnika. W ka\:017cdym ruchu nale\:017cy zdoby\[CAcute] co najmniej jeden \
+pion przeciwnika.\n\nJe\:015bli gracz nie mo\:017ce wykona\[CAcute] \
+\:017cadnego dozwolonego ruchu, traci kolejk\:0119 i wykonuje go drugi gracz. \
+\>\"", ",", " ", 
+          RowBox[{"{", 
+           RowBox[{
+            RowBox[{"\"\<Player vs Player\>\"", " ", "\[Rule]", " ", "1"}], 
+            ",", " ", 
+            RowBox[{"\"\<Quit game\>\"", " ", "\[Rule]", "2"}], " ", ",", 
+            RowBox[{"\"\<Black vs Computer\>\"", " ", "\[Rule]", " ", "3"}], 
+            ",", " ", 
+            RowBox[{"\"\<White vs Computer\>\"", " ", "\[Rule]", " ", "4"}]}],
+            "}"}]}], "]"}]}], ";", " ", 
+       RowBox[{"Which", "[", 
+        RowBox[{
+         RowBox[{"choice", " ", "\[Equal]", " ", "1"}], ",", " ", 
+         RowBox[{"gamePlayerVsPlayer", "[", "]"}], ",", "\[IndentingNewLine]", 
+         RowBox[{"choice", " ", "\[Equal]", " ", "3"}], ",", " ", 
+         RowBox[{"gamePlayerVsComputer", "[", 
+          RowBox[{"Black", ",", " ", "White"}], "]"}], ",", 
+         "\[IndentingNewLine]", 
+         RowBox[{"choice", " ", "\[Equal]", " ", "4"}], ",", " ", 
+         RowBox[{"gamePlayerVsComputer", "[", 
+          RowBox[{"White", ",", " ", "Black"}], "]"}]}], "]"}]}], ")"}]}], 
+    ";"}], "\[IndentingNewLine]", "\[IndentingNewLine]", 
+   RowBox[{"execute", "[", "]"}]}]}]], "Input",
+ CellChangeTimes->{{3.79611282174647*^9, 3.796113048700135*^9}, {
+  3.796197875115285*^9, 3.7961979101917763`*^9}, {3.7961984666228247`*^9, 
+  3.796198474470315*^9}, {3.796199099527502*^9, 3.7961991700801353`*^9}, {
+  3.79619921338029*^9, 3.796199371816917*^9}, {3.79619941066403*^9, 
+  3.796199549188264*^9}, {3.796200334611875*^9, 3.7962003404242992`*^9}}]
+},
+WindowSize->{977, 577},
+WindowMargins->{{10, Automatic}, {Automatic, 34}},
+FrontEndVersion->"10.0 for Linux x86 (64-bit) (June 27, 2014)",
+StyleDefinitions->"Default.nb"
+]
+(* End of Notebook Content *)
+
+(* Internal cache information *)
+(*CellTagsOutline
+CellTagsIndex->{}
+*)
+(*CellTagsIndex
+CellTagsIndex->{}
+*)
+(*NotebookFileOutline
+Notebook[{
+Cell[558, 20, 44022, 995, 4147, "Input"]
+}
+]
+*)
+
+(* End of internal cache information *)
